@@ -54,7 +54,7 @@ public class TodosTest {
     }
 
     @Test
-    public void shouldSelectByRequestObed() {
+    public void shouldSelectTwoTasksByRequestObed() {
         SimpleTask simpleTask = new SimpleTask(5, "Позвонить в Нетобанк");
 
         String[] subtasks = { "завтрак", "обед", "ужин" };
@@ -75,6 +75,81 @@ public class TodosTest {
 
         Task[] expected = { epic, meeting };
         Task[] actual = todos.search("обед");
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldSelectThreeTasksByRequestObed() {
+        SimpleTask simpleTask = new SimpleTask(5, "Сходить на обед");
+
+        String[] subtasks = { "завтрак", "обед", "ужин" };
+        Epic epic = new Epic(55, subtasks);
+
+        Meeting meeting = new Meeting(
+                555,
+                "Выкатка 3й версии приложения",
+                "Приложение Нетобанка",
+                "Во вторник после обеда"
+        );
+
+        Todos todos = new Todos();
+
+        todos.add(simpleTask);
+        todos.add(epic);
+        todos.add(meeting);
+
+        Task[] expected = { simpleTask, epic, meeting };
+        Task[] actual = todos.search("обед");
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldSelectOneTaskByRequestObed() {
+        SimpleTask simpleTask = new SimpleTask(5, "Позвонить в Нетобанк");
+
+        String[] subtasks = { "завтрак", "обед", "ужин" };
+        Epic epic = new Epic(55, subtasks);
+
+        Meeting meeting = new Meeting(
+                555,
+                "Выкатка 3й версии приложения",
+                "Приложение Нетобанка",
+                "Во вторник после 14.00"
+        );
+
+        Todos todos = new Todos();
+
+        todos.add(simpleTask);
+        todos.add(epic);
+        todos.add(meeting);
+
+        Task[] expected = { epic };
+        Task[] actual = todos.search("обед");
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldSelectNoTasksByRequestSleep() {
+        SimpleTask simpleTask = new SimpleTask(5, "Позвонить в Нетобанк");
+
+        String[] subtasks = { "завтрак", "обед", "ужин" };
+        Epic epic = new Epic(55, subtasks);
+
+        Meeting meeting = new Meeting(
+                555,
+                "Выкатка 3й версии приложения",
+                "Приложение Нетобанка",
+                "Во вторник после обеда"
+        );
+
+        Todos todos = new Todos();
+
+        todos.add(simpleTask);
+        todos.add(epic);
+        todos.add(meeting);
+
+        Task[] expected = {  };
+        Task[] actual = todos.search("Поспать");
         Assertions.assertArrayEquals(expected, actual);
     }
 }
